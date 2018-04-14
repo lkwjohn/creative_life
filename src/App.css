@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
+body{
+  font-family: 'Raleway', sans-serif;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #405CDA;
+  height: auto;
+  padding: 20px;
+  margin-bottom: 40px;
+  color: white;
+  box-shadow: 0 4px 40px 0 rgba(0, 0, 0, 0.4), 0 6px 50px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.Card{
+  /*border-bottom: 1px solid #a3a3c2;*/
+  background-color: #e8ecff;
+  padding: 10px 0 0 0 ;
+}
+
+.Tag{
+    display: inline;
+    padding: .2em .6em .3em;
+    /*font-weight: 700;*/
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+    margin: 0 3px 0 3px;
+}
+
+.Tag-info{
+      background-color: #7c95ff;
+      font-size: 10pt;
+}
+
+.Tag-small{
+  font-size: 8pt !important;
+  font-family: 'Raleway-bold' !important;
+}
+
+.Search-box {
+  padding:8px 15px;
+  background:rgba(50, 50, 50, 0.2);
+  border:0px solid #dbdbdb;
+  font-size: 8pt; 
+  width: 20%;
+  color: #c8c9ce;
+}
+
+*:focus {
+    outline: none;
+    color: #fff;
+}
+
+.Search-button {
+  position:relative;
+  padding:6px 15px;
+  left:-8px;
+  border:2px solid #7c95ff;
+  background-color:#7c95ff;
+  color:#fafafa;
+  font-size: 8pt; 
+}
+
+.Search-button:hover  {
+    background-color:#fafafa;
+    color:#7c95ff;
+    border:2px solid #fafafa;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
