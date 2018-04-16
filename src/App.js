@@ -33,7 +33,11 @@ class App extends Component {
         (result) => {
           this.setState({
             isTagsLoaded: true,
-            tags: result.data
+            tags: [
+                  {
+                      "id": 0,
+                      "tag": "All"
+                  }].concat(result.data)
           });
         },
         (error) => {
@@ -71,19 +75,28 @@ class App extends Component {
   }
 
   getTestimonialByTag(tag_id){
-    var postData = { id: tag_id };
+    if(tag_id === 0){
+      this.getTestimonial(0) //reset page to 1
+      this.setState({
+        currentPage: 0
+      })
+      return
+    }
+    else{
+      var postData = { id: tag_id };
 
-    axios.post("http://127.0.0.1:1337/testimonial/get_testmonial_by_tag", postData)
-        .then((result) => {
-          this.setState({
-            testimonial: result.data.data
-          });
-        })
-        .catch((error) => {
-           this.setState({
-            error
-          });
-        })
+      axios.post("http://127.0.0.1:1337/testimonial/get_testmonial_by_tag", postData)
+          .then((result) => {
+            this.setState({
+              testimonial: result.data.data
+            });
+          })
+          .catch((error) => {
+             this.setState({
+              error
+            });
+          })
+    }
   }
 
   onPageChange(e){
