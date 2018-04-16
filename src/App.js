@@ -11,8 +11,11 @@ class App extends Component {
       isTagsLoaded:         false,
       testimonial:          [],
       tags:                 [],
-      error:                ""
+      error:                "",
+      searchText:           ""
     };
+
+    this.onSearchChange = this.onSearchChange.bind(this);
   }
 
   componentDidMount() {
@@ -69,6 +72,27 @@ class App extends Component {
         })
   }
 
+  onSearch(){
+    var postData = { search_text: this.state.searchText.trim() };
+
+    axios.post("http://127.0.0.1:1337/testimonial/search", postData)
+        .then((result) => {
+            console.log(result.data.data);
+          this.setState({
+            testimonial: result.data.data
+          });
+        })
+        .catch((error) => {
+           this.setState({
+            error
+          });
+        })
+  }
+
+  onSearchChange(e) {
+    this.setState({ searchText: e.target.value });
+  }
+
   render() {
     if(this.state.isLoaded === false){
         return (
@@ -85,6 +109,7 @@ class App extends Component {
     }
     else{
       var that = this
+      var body
       var tags = this.state.tags.map(function (item, index) {
                   return (
                     <span key={"tag_"+item.id+"_"+item.tag} className="Tag Tag-info Tag-small" onClick={() => that.getTestimonialByTag(item.id)}> {item.tag} </span>
@@ -113,6 +138,29 @@ class App extends Component {
                       </div>
                   )
               })
+      
+
+      if(this.state.testimonial.length == 0){
+        body = <div className="container">
+          <p>No testimonial found</p>
+        </div>
+      }
+      else{
+        body = <div className="container">
+          <div className="row">
+            <div className="col-sm-6">
+              <label><b>Title</b></label>
+            </div>
+            <div className="col-sm-2">
+              <label><b>CL Issue</b></label>
+            </div>
+            <div className="col-sm-4">
+              <label><b>Tags</b></label>
+            </div>
+          </div>
+          {testimonial}
+        </div>
+      }
 
       return (
         <div className="App">
@@ -120,25 +168,12 @@ class App extends Component {
             <img src={logo} className="App-logo" alt="logo" />
             <h1 className="App-title">Welcome to Testimonial Library</h1>
             <br/>
-              <input type="text" placeholder="Search..." required className="Search-box"/>
-              <input type="button" value="Search" className="Search-button"/>
+              <input type="text" placeholder="Search..." required className="Search-box" onChange={this.onSearchChange}/>
+              <input type="button" value="Search" className="Search-button" onClick={()=>this.onSearch()}/>
             <br/>
             {tags}
           </header>
-          <div className="container">
-            <div className="row">
-              <div className="col-sm-6">
-                <label><b>Title</b></label>
-              </div>
-              <div className="col-sm-2">
-                <label><b>CL Issue</b></label>
-              </div>
-              <div className="col-sm-4">
-                <label><b>Tags</b></label>
-              </div>
-            </div>
-            {testimonial}
-          </div>
+          {body}
           
         </div>
       )
