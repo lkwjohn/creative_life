@@ -7,34 +7,25 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isTestimonialsLoaded: false,
-      isTagsLoaded:         false,
-      testimonial:          [],
-      tags:                 [],
-      error:                "",
-      searchText:           ""
+      isTestimonialsLoaded:     false,
+      isTagsLoaded:             false,
+      testimonial:              [],
+      tags:                     [],
+      error:                    "",
+      searchText:               "",
+      currentPage:              0,
+      sizeOfTestimonial:        0,
+      pageNumberskey:           [], 
+   
     };
 
-    this.onSearchChange = this.onSearchChange.bind(this);
+    this.onSearchChange   = this.onSearchChange.bind(this);
+    this.getTestimonial   = this.getTestimonial.bind(this);
+    this.onPageChange     = this.onPageChange.bind(this);
   }
 
   componentDidMount() {
-    fetch("http://127.0.0.1:1337/testimonial/get_all")
-      .then(res => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            isTestimonialsLoaded: true,
-            testimonial: result.data
-          });
-        },
-        (error) => {
-          this.setState({
-            isTestimonialsLoaded: true,
-            error
-          });
-        }
-      )
+      this.getTestimonial(this.state.currentPage)
 
       fetch("http://127.0.0.1:1337/testimonial/get_tags")
       .then(res => res.json())
@@ -52,7 +43,31 @@ class App extends Component {
           });
         }
       )
+  }
 
+  getTestimonial(pagination){
+    axios.post("http://127.0.0.1:1337/testimonial/get_all", {pagination: pagination})
+        .then((result) => {
+
+           // Logic for displaying page numbers
+          const pageNumbers = [];
+          for (let i = 1; i <= Math.ceil(result.data.size.count / 100); i++) {
+            pageNumbers.push(i);
+          }
+
+          this.setState({
+            isTestimonialsLoaded: true,
+            testimonial: result.data.data,
+            sizeOfTestimonial: result.data.size.count,
+            pageNumberskey: pageNumbers
+          });
+        })
+        .catch((error) => {
+           this.setState({
+            isTestimonialsLoaded: true,
+            error
+          });
+        })
   }
 
   getTestimonialByTag(tag_id){
@@ -60,7 +75,6 @@ class App extends Component {
 
     axios.post("http://127.0.0.1:1337/testimonial/get_testmonial_by_tag", postData)
         .then((result) => {
-            console.log(result.data.data);
           this.setState({
             testimonial: result.data.data
           });
@@ -72,12 +86,25 @@ class App extends Component {
         })
   }
 
+  onPageChange(e){
+    var page = Number(e.target.id)-1
+    if(this.state.currentPage !== page){
+      this.setState({
+        currentPage: page
+      })
+      this.getTestimonial(page)
+    }
+  }
+
   onSearch(){
+    if(this.state.searchText.trim() === ''){
+      alert("Enter some text")
+      return
+    }
     var postData = { search_text: this.state.searchText.trim() };
 
     axios.post("http://127.0.0.1:1337/testimonial/search", postData)
         .then((result) => {
-            console.log(result.data.data);
           this.setState({
             testimonial: result.data.data
           });
@@ -129,8 +156,11 @@ class App extends Component {
                             {item.title}
                           </p>
                         </div>
-                        <div className="col-sm-2">
+                        <div className="col-sm-1">
                           {item.cl_year}/{item.cl_month}
+                        </div>
+                        <div className="col-sm-1">
+                          {item.page}
                         </div>
                         <div className="col-sm-4">
                           {tags}
@@ -139,8 +169,23 @@ class App extends Component {
                   )
               })
       
+      var pagination = this.state.pageNumberskey.map(number => {
+                var classname 
+                if(this.state.currentPage === number-1){
+                  classname = "Pagination-body Pagination-current"
+                }
+                else{
+                  classname = "Pagination-body"
+                }
+                return (
+                  <span key={number} id={number} className={classname} onClick={this.onPageChange}>{number} </span>
+                )
+            })
 
-      if(this.state.testimonial.length == 0){
+
+      pagination = <div>{pagination}</div>
+
+      if(this.state.testimonial.length === 0){
         body = <div className="container">
           <p>No testimonial found</p>
         </div>
@@ -151,8 +196,11 @@ class App extends Component {
             <div className="col-sm-6">
               <label><b>Title</b></label>
             </div>
-            <div className="col-sm-2">
+            <div className="col-sm-1">
               <label><b>CL Issue</b></label>
+            </div>
+            <div className="col-sm-1">
+              <label><b>Page</b></label>
             </div>
             <div className="col-sm-4">
               <label><b>Tags</b></label>
@@ -166,15 +214,16 @@ class App extends Component {
         <div className="App">
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">Welcome to Testimonial Library</h1>
-            <br/>
-              <input type="text" placeholder="Search..." required className="Search-box" onChange={this.onSearchChange}/>
-              <input type="button" value="Search" className="Search-button" onClick={()=>this.onSearch()}/>
-            <br/>
+            <h1 className="App-title">Creative Life Testimonial Reference</h1>
+            <div className="Search-body">
+                <input type="text" placeholder="Search..." required className="Search-box" onChange={this.onSearchChange} onSubmit={()=>this.onSearch()}/>
+                <input type="button" value="Search" className="Search-button" onClick={()=>this.onSearch()}/>
+            </div>
             {tags}
+            
           </header>
           {body}
-          
+          {pagination}
         </div>
       )
     }

@@ -35,28 +35,33 @@ body{
   /*border-bottom: 1px solid #a3a3c2;*/
   background-color: #e8ecff;
   padding: 10px 0 0 0 ;
+  margin: 5px 0 10px 0;
 }
 
 .Tag{
-    display: inline;
-    padding: .2em .6em .3em;
-    /*font-weight: 700;*/
-    color: #fff;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    border-radius: .25em;
-    margin: 0 3px 0 3px;
+  display: inline;
+  padding: .2em .6em .3em;
+  /*font-weight: 700;*/
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em;
+  margin: 0 3px 0 3px;
 }
 
 .Tag-info{
-      background-color: #7c95ff;
-      font-size: 10pt;
+  background-color: #7c95ff;
+  font-size: 10pt;
 }
 
 .Tag-small{
   font-size: 8pt !important;
   font-family: 'Raleway-bold' !important;
+}
+
+.Search-body{
+  margin: 20px 0 20px 0;
 }
 
 .Search-box {
@@ -68,9 +73,14 @@ body{
   color: #c8c9ce;
 }
 
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #c8c9ce;
+    opacity: 1; /* Firefox */
+}
+
 *:focus {
-    outline: none;
-    color: #fff;
+  outline: none;
+  color: #fff;
 }
 
 .Search-button {
@@ -84,11 +94,31 @@ body{
 }
 
 .Search-button:hover  {
-    background-color:#fafafa;
-    color:#7c95ff;
-    border:2px solid #fafafa;
+  background-color:#fafafa;
+  color:#7c95ff;
+  border:2px solid #fafafa;
 }
 
+
+.Pagination-body{
+  background-color:#405CDA;
+  color: white;
+  display: inline-block;
+  padding: 2px;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  width: 20px;
+  vertical-align: baseline;
+  margin: 3px;
+  border: 0px solid ;
+  border-radius: 5px;
+  font-size: 10pt;
+}
+
+.Pagination-current{
+  background-color:#7c95ff;
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
