@@ -159,7 +159,7 @@ class App extends Component {
       var testimonial = this.state.testimonial.map(function (item, index) {
         
                   var tags = item.tags.map(function (tag, index) {
-                              return  <span key={item.id+"_"+tag} className="Tag Tag-info"> {tag} </span>
+                              return  <span key={item.id+"_"+tag} className="Tag Tag-info" onClick={() => that.getTestimonialByTag(tag.id)}> {tag} </span>
                             })
 
                   return (
