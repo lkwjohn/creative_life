@@ -1,11 +1,48 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway');
 
-body{
-  font-family: 'Raleway', sans-serif;
+@media (max-width: @screen-xs) {
+    body{font-size: 5px;}
+}
+
+@media (max-width: @screen-sm) {
+    body{font-size: calc(4vw + 4vh + 2vmin);}
+}
+
+
+body, html, #root{
+    font-family: 'Raleway', sans-serif;
+    margin: 0;
+    height: 100%;
+}
+
+.bg { 
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f3f3f5+0,ffffff+40,ffffff+60,f3f3f5+100 */
+background: rgb(256,256,256); /* Old browsers */
+}
+
+.row{
+  margin: 0px;
+  height: 100%;
+}
+
+.flower_left{
+  background-image: url("/sakura-left.jpg");
+  height: auto;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position:left bottom; 
+}
+
+.flower_right{
+  background-image: url("/sakura-right.jpg");
+  height: auto;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .App {
   text-align: center;
+  height: 100%;
 }
 
 .App-logo {
@@ -14,12 +51,12 @@ body{
 }
 
 .App-header {
-  background-color: #405CDA;
-  height: auto;
-  padding: 20px;
+  /*background-color: #405CDA;*/
+  /*height: auto;*/
+  /*padding: 20px;*/
   margin-bottom: 40px;
-  color: white;
-  box-shadow: 0 4px 40px 0 rgba(0, 0, 0, 0.4), 0 6px 50px 0 rgba(0, 0, 0, 0.19);
+  /*color: white;*/
+  /*box-shadow: 0 4px 40px 0 rgba(0, 0, 0, 0.4), 0 6px 50px 0 rgba(0, 0, 0, 0.19);*/
   text-align: center;
 }
 
@@ -33,13 +70,35 @@ body{
 
 .Card{
   /*border-bottom: 1px solid #a3a3c2;*/
-  background-color: #e8ecff;
+  background-color: #f4f5f7;
   padding: 10px 0 0 0 ;
+  margin: 5px 0 10px 0;
+  text-align: left;
+}
+
+.Card-h2{
+  font-size: 10pt;
+}
+
+.Card-h3{
+  font-size: 9pt;
+}
+
+.Card-h4{
+  font-size: 8pt;
+}
+
+.Card-description-margin{
   margin: 5px 0 10px 0;
 }
 
+.Card-offset-margin{
+  margin-left: -5px !important;
+}
+
 .Tag{
-  display: inline;
+  display: inline-block;
+  /*display: inline;*/
   padding: .2em .6em .3em;
   /*font-weight: 700;*/
   color: #fff;
@@ -57,7 +116,7 @@ body{
 
 .Tag-small{
   font-size: 8pt !important;
-  font-family: 'Raleway-bold' !important;
+  font-family: 'Raleway-light' !important;
 }
 
 .Search-body{
@@ -66,15 +125,15 @@ body{
 
 .Search-box {
   padding:8px 15px;
-  background:rgba(50, 50, 50, 0.2);
+  background: #878787;
   border:0px solid #dbdbdb;
   font-size: 8pt; 
   width: 20%;
-  color: #c8c9ce;
+  color: #f9f9f9;
 }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #c8c9ce;
+    color: #f9f9f9;
     opacity: 1; /* Firefox */
 }
 
@@ -90,7 +149,7 @@ body{
   border:2px solid #7c95ff;
   background-color:#7c95ff;
   color:#fafafa;
-  font-size: 8pt; 
+  font-size: 8pt;
 }
 
 .Search-button:hover  {

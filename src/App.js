@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import axios from 'axios';
 import './App.css';
+var base_url = require('./common.js').base_url; 
 
 class App extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class App extends Component {
   componentDidMount() {
       this.getTestimonial(this.state.currentPage)
 
-      fetch("http://127.0.0.1:1337/testimonial/get_tags")
+      fetch(base_url+"/testimonial/get_tags")
       .then(res => res.json())
       .then(
         (result) => {
@@ -50,7 +51,7 @@ class App extends Component {
   }
 
   getTestimonial(pagination){
-    axios.post("http://127.0.0.1:1337/testimonial/get_all", {pagination: pagination})
+    axios.post(base_url+"/testimonial/get_all", {pagination: pagination})
         .then((result) => {
 
            // Logic for displaying page numbers
@@ -85,7 +86,7 @@ class App extends Component {
     else{
       var postData = { id: tag_id };
 
-      axios.post("http://127.0.0.1:1337/testimonial/get_testmonial_by_tag", postData)
+      axios.post(base_url+"/testimonial/get_testmonial_by_tag", postData)
           .then((result) => {
             this.setState({
               testimonial: result.data.data
@@ -116,7 +117,7 @@ class App extends Component {
     }
     var postData = { search_text: this.state.searchText.trim() };
 
-    axios.post("http://127.0.0.1:1337/testimonial/search", postData)
+    axios.post(base_url+"/testimonial/search", postData)
         .then((result) => {
           this.setState({
             testimonial: result.data.data
@@ -159,26 +160,30 @@ class App extends Component {
       var testimonial = this.state.testimonial.map(function (item, index) {
         
                   var tags = item.tags.map(function (tag, index) {
-                              return  <span key={item.id+"_"+tag} className="Tag Tag-info" onClick={() => that.getTestimonialByTag(tag.id)}> {tag} </span>
+                              return  <span key={item.id+"_"+tag} className="Tag Tag-info Tag-small" onClick={() => that.getTestimonialByTag(tag.id)}> {tag} </span>
                             })
 
                   return (
                     <div className="row Card" key={"testimonial_"+item.id}>
-                        <div className="col-sm-6">
-                          <p>
-                            {item.title}
-                          </p>
-                        </div>
-                        <div className="col-sm-1">
-                          {item.cl_year}/{item.cl_month}
-                        </div>
-                        <div className="col-sm-1">
-                          {item.page}
-                        </div>
-                        <div className="col-sm-4">
-                          {tags}
-                        </div>
-                      </div>
+                            <div className="col-md-12 col-sm-12">
+                              <b>{item.title}</b> ({item.division})
+                            </div>
+                            <div className="col-md-12 col-sm-12 Card-h4">
+                              {item.from}
+                            </div>
+                            <div className="col-md-12 col-sm-12 Card-h4">
+                              Issue: {item.cl_year}/{item.cl_month} 
+                            </div>
+                            <div className="col-md-12 col-sm-12 Card-h4">
+                              Page: {item.page}
+                            </div>
+                            <div className="col-md-12 col-sm-12 Card-offset-margin">
+                              {tags}
+                            </div>
+                            <div className="col-md-12 col-sm-12 Card-h3 Card-description-margin">
+                              {item.description}
+                            </div>
+                    </div>
                   )
               })
       
@@ -205,38 +210,35 @@ class App extends Component {
       }
       else{
         body = <div className="container">
-          <div className="row">
-            <div className="col-sm-6">
-              <label><b>Title</b></label>
-            </div>
-            <div className="col-sm-1">
-              <label><b>CL Issue</b></label>
-            </div>
-            <div className="col-sm-1">
-              <label><b>Page</b></label>
-            </div>
-            <div className="col-sm-4">
-              <label><b>Tags</b></label>
-            </div>
-          </div>
           {testimonial}
         </div>
       }
 
       return (
-        <div className="App">
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">Creative Life Testimonial Reference</h1>
-            <div className="Search-body">
-                <input type="text" placeholder="Search..." required className="Search-box" onChange={this.onSearchChange} onSubmit={()=>this.onSearch()}/>
-                <input type="button" value="Search" className="Search-button" onClick={()=>this.onSearch()}/>
+        <div className="App ">
+          <div className="">
+            <div className="row">
+              <div className="col-sm-2 col-2 flower_left">
+              </div>
+              <div className="col-sm-8 col-8">
+                <header className="App-header">
+                  <img src={logo} className="App-logo" alt="logo" />
+                  <h1 className="App-title">Creative Life Testimonial Reference</h1>
+                  <div className="Search-body">
+                      <input type="text" placeholder="Search..." required className="Search-box" onChange={this.onSearchChange} onSubmit={()=>this.onSearch()}/>
+                      <input type="button" value="Search" className="Search-button" onClick={()=>this.onSearch()}/>
+                  </div>
+                  {tags}
+                  
+                </header>
+                {body}
+                {pagination}
+              </div>
+              <div className="col-sm-2 col-2 flower_right">
+              </div>
             </div>
-            {tags}
-            
-          </header>
-          {body}
-          {pagination}
+          </div>
+
         </div>
       )
     }
